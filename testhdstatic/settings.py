@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3h#w0_^h1vf5cd&pj7r)sz$ikz5ky*z06hqq5!2_!a&zlzbj0)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'testhdstatic.urls'
@@ -74,21 +75,30 @@ WSGI_APPLICATION = 'testhdstatic.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         # 'ENGINE': 'django.db.backends.postgresql',
+#         # 'NAME': 'yajcqkqa',
+#         # 'USER': 'yajcqkqa',
+#         # 'PASSWORD': 'Dgvl3_F_UPacyfKDqztNxR0rPWoAfR6W',
+#         # 'HOST': 'pellefant.db.elephantsql.com',
+#         # 'PORT': '',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'MusicDjango',
+#         'USER': 'postgres',
+#         'PASSWORD': '1234',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
+
+
+import dj_database_url
+from decouple import config
 DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'yajcqkqa',
-        # 'USER': 'yajcqkqa',
-        # 'PASSWORD': 'Dgvl3_F_UPacyfKDqztNxR0rPWoAfR6W',
-        # 'HOST': 'pellefant.db.elephantsql.com',
-        # 'PORT': '',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MusicDjango',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default= config('DATABASE_URL')
+    )
 }
 
 
@@ -133,3 +143,4 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
